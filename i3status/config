@@ -4,7 +4,7 @@ general {
 	interval = 1
 }
 
-order += "disk /"
+order += "disk /home"
 order += "wireless wlp26s0"
 order += "load"
 order += "cpu_usage"
@@ -26,7 +26,7 @@ load {
 }
 
 cpu_usage {
-	format = "CPU: %usage\%"
+	format = "CPU: %usage"
 	max_threshold = 64
 	degraded_threshold = 32
 }
@@ -36,6 +36,6 @@ cpu_temperature 0 {
 	path = "/sys/devices/platform/coretemp.0/temp1_input"
 }
 
-disk "/" {
+disk "/home" {
 	format = "%free"
 }
