@@ -191,14 +191,11 @@ bindsym $mod+r mode "resize"
 
 # Screenshot utilities
 mode "screenshot-to-file" {
-	# Fullscreen
-	bindsym f exec "maim > ~/images/screenshots/$(date +%Y-%m-%d_%H-%M-%S).png" ; mode "default"
+	# No one ever use "full screen"
+	# No one ever use "current window"
 
-	# Fenêtre
-	bindsym w exec "maim --window=$(xdotool getactivewindow) ~/images/screenshots/$(date +%Y-%m-%d_%H-%M-%S).png" ; mode "default"
-
-	# Sélection
-	bindsym s exec "maim -su --color=1,0.2,0.5,0.8 --bordersize=1 ~/images/screenshots/$(date +%Y-%m-%d_%H-%M-%S).png" ; mode "default"
+	# Selection
+	bindsym s exec "slurp -b 2a2a1169 | grim -g ~/images/captures/$(date +%Y-%m-%d_%H-%M-%S).png" ; mode "default"
 
 	# back to normal: Enter or Escape or $mod+Print
 	bindsym Return mode "default"
@@ -208,16 +205,11 @@ mode "screenshot-to-file" {
 bindsym $mod+Print mode "screenshot-to-file"
 
 mode "screenshot-to-clipboard" {
-	# Fullscreen
-	bindsym f exec "maim | xclip -selection clipboard -t image/png" ; mode "default"
-
-	# Window
-	bindsym w exec "maim --window=$(xdotool getactivewindow) | xclip -selection clipboard -t image/png" ; mode "default"
-	# And also a shortcut for speed
-	bindsym Print exec "maim --window=$(xdotool getactivewindow) | xclip -selection clipboard -t image/png" ; mode "default"
+	# No one ever use "full screen"
+	# No one ever use "current window"
 
 	# Selection
-	bindsym s exec "maim -su --color=1,0.2,0.5,0.8 --bordersize=1 | xclip -selection clipboard -t image/png" ; mode "default"
+	bindsym s exec "slurp -b 2a2a1169 | grim -g - - | wl-copy -t image/png" ; mode "default"
 
 	# back to normal: Enter or Escape or $mod+Print
 	bindsym Return mode "default"
