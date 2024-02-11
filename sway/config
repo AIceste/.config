@@ -32,6 +32,15 @@ set $base0f #f9f9f9
 # Somewhat important config
 set $mod Mod4
 
+# Setup monitors layout
+output DP-3 mode 2560x1440 position 0 1120 
+output HDMI-A-1 mode 2560x1440 position 2560 0 transform 270
+
+# Setup inputs
+input type:keyboard {
+	xkb_layout ca
+}
+
 # Font for window titles. Will also be used by the bar unless a different font
 # is used in the bar {} block below.
 # This font is widely installed, provides lots of unicode glyphs, right-to-left
@@ -42,17 +51,13 @@ font pango:DejaVu Sans Mono 8
 floating_modifier $mod
 
 # start a terminal
-bindsym $mod+Return exec i3-sensible-terminal
+bindsym $mod+Return exec foot
 
 # kill focused window
 bindsym $mod+Shift+q kill
 
-# start dmenu (a program launcher)
-bindsym $mod+d exec dmenu_run
-# There also is the (new) i3-dmenu-desktop which only displays applications
-# shipping a .desktop file. It is a wrapper around dmenu, so you need that
-# installed.
-# bindsym $mod+d exec --no-startup-id i3-dmenu-desktop
+# start bemenu (a program launcher)
+bindsym $mod+d exec bemenu-run
 
 # change focus
 bindsym $mod+h focus left
@@ -61,7 +66,7 @@ bindsym $mod+k focus up
 bindsym $mod+l focus right
 
 # nevermind that
-# focus_follows_mouse no 
+# focus_follows_mouse no
 
 # alternatively, you can use the cursor keys:
 bindsym $mod+Left focus left
@@ -154,11 +159,9 @@ bindsym $mod+Shift+9 move container to workspace $ws9
 bindsym $mod+Shift+0 move container to workspace $ws10
 
 # reload the configuration file
-bindsym $mod+Shift+c reload
-# restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
-bindsym $mod+Shift+r restart
+bindsym $mod+Shift+r exec "swaymsg reload"
 # exit i3 (logs you out of your X session)
-bindsym $mod+Shift+e exec "i3-msg exit"
+bindsym $mod+Shift+e exec "swaymsg exit"
 
 # resize window (you can also use the mouse for that)
 mode "resize" {
@@ -210,7 +213,7 @@ mode "screenshot-to-clipboard" {
 
 	# Window
 	bindsym w exec "maim --window=$(xdotool getactivewindow) | xclip -selection clipboard -t image/png" ; mode "default"
-	# And also a shortcut for speed 
+	# And also a shortcut for speed
 	bindsym Print exec "maim --window=$(xdotool getactivewindow) | xclip -selection clipboard -t image/png" ; mode "default"
 
 	# Selection
@@ -225,34 +228,29 @@ bindsym Print mode "screenshot-to-clipboard"
 
 mode "audio-output-selection" {
 	bindsym s exec "~/.scripts/pa_usesinkport.sh alsa_output.pci-0000_21_00.3.analog-stereo analog-output-lineout" mode "default"
-	bindsym h exec "~/.scripts/pa_usesinkport.sh alsa_output.pci-0000_21_00.3.analog-stereo analog-output-headphones" mode "default"
-	bindsym d exec "~/.scripts/pa_usesinkport.sh alsa_output.usb-Grace_Design_SDAC-00.analog-stereo analog-output" mode "default"
+	bindsym d exec "~/.scripts/pa_usesinkport.sh alsa_output.usb-Grace_Design_SDAC-00.iec958-stereo iec958-stereo-output" mode "default"
+	# bindsym h exec "~/.scripts/pa_usesinkport.sh alsa_output.pci-0000_21_00.3.analog-stereo analog-output-headphones" mode "default"
 	bindsym Return mode "default"
 	bindsym Escape mode "default"
 	bindsym $mod+a mode "default"
 }
 bindsym $mod+a mode "audio-output-selection"
 
-# Pulsaudio - strange hardcore stuff to change volume
-# of course ain't working
-bindsym $mod+Ctrl+v exec ~/.scripts/pa_changevolume.sh
-
-
 # Redshift - could do some smart things with a mode and stuff later on
-bindsym $mod+Ctrl+0 exec ~/.scripts/redshift_hardset.sh 3400 0.80
-bindsym $mod+Ctrl+9 exec ~/.scripts/redshift_hardset.sh 2800 0.70
-bindsym $mod+Ctrl+8 exec ~/.scripts/redshift_hardset.sh 2800 0.60
-bindsym $mod+Ctrl+7 exec ~/.scripts/redshift_hardset.sh 2800 0.50
-bindsym $mod+Ctrl+6 exec ~/.scripts/redshift_hardset.sh 2400 0.50
-bindsym $mod+Ctrl+5 exec ~/.scripts/redshift_hardset.sh 2400 0.40
-bindsym $mod+Ctrl+4 exec ~/.scripts/redshift_hardset.sh 2100 0.30
-bindsym $mod+Ctrl+3 exec ~/.scripts/redshift_hardset.sh 1200 0.22
-bindsym $mod+Ctrl+2 exec ~/.scripts/redshift_hardset.sh 1200 0.16
-bindsym $mod+Ctrl+1 exec ~/.scripts/redshift_hardset.sh 1000 0.10
+bindsym $mod+Ctrl+0 exec ~/.config/scripts/gammastep.sh 6400 0.95
+bindsym $mod+Ctrl+9 exec ~/.config/scripts/gammastep.sh 5000 0.90
+bindsym $mod+Ctrl+8 exec ~/.config/scripts/gammastep.sh 5000 0.84
+bindsym $mod+Ctrl+7 exec ~/.config/scripts/gammastep.sh 4200 0.84
+bindsym $mod+Ctrl+6 exec ~/.config/scripts/gammastep.sh 4200 0.69
+bindsym $mod+Ctrl+5 exec ~/.config/scripts/gammastep.sh 4200 0.42
+bindsym $mod+Ctrl+4 exec ~/.config/scripts/gammastep.sh 2100 0.42
+bindsym $mod+Ctrl+3 exec ~/.config/scripts/gammastep.sh 2100 0.21
+bindsym $mod+Ctrl+2 exec ~/.config/scripts/gammastep.sh 1200 0.21
+bindsym $mod+Ctrl+1 exec ~/.config/scripts/gammastep.sh 1000 0.10
 
 # Useful shortcuts
 bindsym $mod+b exec firefox
-bindsym $mod+ctrl+l exec "i3lock -c000000 -u ; sleep 2 ; xset dpms force standby"
+bindsym $mod+ctrl+l exec "swaylock -c000000 -u"
 
 # i3bar configuration
 # Start i3bar to display a workspace bar with i3status
@@ -268,10 +266,10 @@ bar {
         separator  $base07
         statusline $base07
         # State             Border  BG      Text
-        focused_workspace   $base07 $base08 $base07
-        active_workspace    $base07 $base08 $base07
-        inactive_workspace  $base07 $base00 $base07
-        urgent_workspace    $base07 $base07 $base00
+        focused_workspace   $base07 $base00 $base07
+        active_workspace    $base07 $base00 $base07
+        inactive_workspace  $base07 $base08 $base07
+        urgent_workspace    $base01 $base00 $base01
         binding_mode        $base00 $base0a $base00
     }
 }

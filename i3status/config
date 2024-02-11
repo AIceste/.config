@@ -11,7 +11,7 @@ order += "cpu_usage"
 # order += "cpu_temperature 0"
 order += "tztime local"
 
-wireless wlp26s0 {
+wireless enp8s0 {
 	format_up = "W: (%quality at %essid, %bitrate) %ip"
 	format_down = "W: down"
 }
