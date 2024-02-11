@@ -226,15 +226,20 @@ mode "screenshot-to-clipboard" {
 }
 bindsym Print mode "screenshot-to-clipboard"
 
-mode "audio-output-selection" {
-	bindsym s exec "~/.scripts/pa_usesinkport.sh alsa_output.pci-0000_21_00.3.analog-stereo analog-output-lineout" mode "default"
-	bindsym d exec "~/.scripts/pa_usesinkport.sh alsa_output.usb-Grace_Design_SDAC-00.iec958-stereo iec958-stereo-output" mode "default"
-	# bindsym h exec "~/.scripts/pa_usesinkport.sh alsa_output.pci-0000_21_00.3.analog-stereo analog-output-headphones" mode "default"
+mode "audio-output-config" {
+	bindsym s exec "~/.config/scripts/aoutput_set.sh alsa_output.usb-Generic_USB_Audio-00.HiFi__hw_Audio__sink Speaker" ; mode "default"
+	bindsym h exec "~/.config/scripts/aoutput_set.sh alsa_output.usb-Generic_USB_Audio-00.HiFi__hw_Audio_1__sink Headphones" ; mode "default"
+
+	bindsym plus exec "pactl set-sink-volume @DEFAULT_SINK@ +4%"
+	bindsym minus exec "pactl set-sink-volume @DEFAULT_SINK@ -4%"
+	bindsym 0 exec "pactl set-sink-volume @DEFAULT_SINK@ 100%"
+	# could consider mapping 1-0 to different volumes
+
 	bindsym Return mode "default"
 	bindsym Escape mode "default"
 	bindsym $mod+a mode "default"
 }
-bindsym $mod+a mode "audio-output-selection"
+bindsym $mod+a mode "audio-output-config"
 
 # Redshift - could do some smart things with a mode and stuff later on
 bindsym $mod+Ctrl+0 exec ~/.config/scripts/gammastep.sh 6400 0.95
